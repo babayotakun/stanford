@@ -11,6 +11,7 @@ fun main(args: Array<String>) {
     val result = AtomicLong(0)
     println(recursiveStep(inputArray, result))
     println(result)
+    println(bruteForce(inputArray))
 }
 
 private fun recursiveStep(array: List<Int>, counter: AtomicLong): List<Int> {
@@ -42,9 +43,21 @@ private fun mergeStep(leftSorted: List<Int>, rightSorted: List<Int>, inversionsC
     return result
 }
 
-fun loadData(): List<Int> {
+private fun loadData(): List<Int> {
     val fileContent = String::class.java.getResource("/IntegerArray.txt").readText()
     return fileContent.split("\r\n").stream()
             .map({ str -> Integer.parseInt(str) })
             .collect(Collectors.toList())
+}
+
+private fun bruteForce(array: List<Int>): Long {
+    var inversionsCounter = 0L
+    for (firstCounter in 0 until array.size) {
+        for (secondCounter in firstCounter until array.size) {
+            if (array[firstCounter] > array[secondCounter]) {
+                inversionsCounter = inversionsCounter.inc()
+            }
+        }
+    }
+    return inversionsCounter
 }
